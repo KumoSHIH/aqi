@@ -1,17 +1,21 @@
 <script>
-import HelloWorld from '@/components/HelloWorld.vue';
-import Select from '@/components/Select.vue';
 import axios from 'axios';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive } from 'vue';
+
 
 export default {
-  name: 'HomeView',
-  components: {
-    Select,
-  },
+  name: 'Select',
   setup() {
-    const data = reactive({});
-    
+    const data = reactive([]);
+    const cityList = reactive([]);
+
+    let newList = [];
+    data.forEach((el) => {
+      // console.log(el);
+      newList.push(el)
+    });
+    console.log(newList);
+
     onMounted(() => {
       const url = 'https://data.epa.gov.tw/api/v2/aqx_p_02';
       const key = '19843a99-912f-4804-9d4b-3fa43961f7a0';
@@ -26,20 +30,22 @@ export default {
           console.log(error);
         })
     })
-
     return {
-      data
+      cityList
     }
-  },
+  }
 }
 </script>
 
 <template>
-  <div class="home">
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Select />
+  <div>
+    <select name="" id="">
+      <option value="">123</option>
+    </select>
+    <p>{{ cityList }}</p>
   </div>
 </template>
 
+<style scoped lang="scss">
 
+</style>
