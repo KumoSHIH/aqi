@@ -11,6 +11,7 @@ export default {
   },
   setup() {
     const data = reactive({});
+    const cityList = reactive([]);
     
     onMounted(() => {
       const url = 'https://data.epa.gov.tw/api/v2/aqx_p_02';
@@ -20,7 +21,6 @@ export default {
         .then((res) => {
           // console.log(res);
           data.value = res.data.records;
-          console.log(data.value);
         })
         .catch((error) => {
           console.log(error);
