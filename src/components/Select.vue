@@ -1,5 +1,4 @@
 <script>
-import { toRaw, onMounted, reactive, ref, computed } from 'vue';
 
 export default {
   props: {
@@ -8,6 +7,7 @@ export default {
       default: () => [],
     }
   },
+  emit: ['filterEvent'],
   setup(props) {
     return {
       props
@@ -19,9 +19,9 @@ export default {
 
 <template>
   <div>
-    <select name="" id="">
+    <select name="" id="" @change="$emit('filterEvent')">
       <option value="">請選擇</option>
-      <option v-for="item in props.location" :key="item" :value="item">{{ item }}</option>
+      <option v-for="item in location" :key="item" :value="item">{{ item }}</option>
     </select>
   </div>
 </template>

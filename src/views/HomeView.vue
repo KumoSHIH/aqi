@@ -7,7 +7,7 @@
 
   const data = [];
   const location = [];
-  const filterText = ref('all');
+  const filterCity = ref('all');
 
   onMounted(() => {
     getData();
@@ -31,6 +31,11 @@
       })
   }
 
+  let filterHandler = () => {
+    console.log('12345678');
+    // filterText.value = city
+  }
+
   // console.log(location);
 
 </script>
@@ -39,7 +44,9 @@
   <div class="home">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Select :location="location" />
+    <Select
+    :location="location" 
+    @filterEvent="filterHandler"/>
   </div>
 </template>
 
