@@ -1,19 +1,16 @@
-# aqi
+# 台灣縣市空氣品質指標 AQI
 
-## Project setup
-```
-npm install
+## Demo
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### 主要練習
+<ul>
+  <li>使用 Vue3</li>
+  <li>元件切分</li>
+  <li>串接 API</li>
+  <li>props、emit</li>
+</ul>
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 文字與圖片為個人練習使用，非商業用途
