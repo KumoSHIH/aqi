@@ -1,4 +1,6 @@
 <script>
+import { ref } from 'vue';
+
 export default {
   props: {
     filterData: {
@@ -7,8 +9,16 @@ export default {
     }
   },
   setup(props) {
+    const isCheck = ref(false);
+
+    const addFavorite = () => {
+      console.log('233');
+      isCheck.value != isCheck.value
+    }
     return {
       props,
+      isCheck,
+      addFavorite
     }
   },
 }
@@ -18,9 +28,17 @@ export default {
   <div class="card" 
     v-for="item in props.filterData"
     :key="item.site">
-    <h6>{{ item.site }}</h6>
-    <p>pm25 {{ item.pm25 }}</p>
-    <p>更新日期: {{ item.datacreationdate }}</p>
+    <div class="card-head">
+      <h6>{{ item.sitename }}</h6>
+      <div class="fav" @click="addFavorite">
+        <font-awesome-icon icon="fa-regular fa-heart" v-show="!isCheck" />
+        <font-awesome-icon icon="fa-solid fa-heart" v-show="isCheck" />
+      </div>
+    </div>
+    <p>狀態: {{ item.status }}</p>
+    <p>空氣品質指標(aqi): {{ item.aqi }}</p>
+    <p>細懸浮微粒(pm2.5): {{ item['pm2.5'] }}</p>
+    <p>發佈時間: {{ item.publishtime }}</p>
   </div>
 </template>
 
@@ -41,5 +59,19 @@ export default {
     @include rwdmax(760) {
       margin-right: 0;
     }
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h6 {
+      font-size: 34px;
+    }
+    .fav {
+      padding: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
   }
 </style>

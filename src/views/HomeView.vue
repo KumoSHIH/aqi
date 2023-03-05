@@ -5,15 +5,14 @@
   import { computed, onMounted, reactive, ref, watch } from 'vue';
 
 
-  const data = []; // 全部資料
-  const county = reactive([]); // 城市(要用響應性綁定)
+  const data = reactive([]); // 全部資料
+  const county = reactive([]); // 城市
   const filterText = ref('ALL'); // 篩選的城市字串
-  let filterData = reactive([]); // 篩選的城市陣列
 
-  watch(filterText, (newVal) => {
-    const newArr = data.filter((el) => el.county === newVal);
-    filterData = newArr;
-  })
+  // watch(filterText, (newVal) => {
+  //   const newArr = data.filter((el) => el.county === newVal);
+  //   filterData = newArr;
+  // })
 
   onMounted(() => {
     getData();
@@ -21,21 +20,19 @@
 
   // 取得 API 資料
   let getData = async () => {
-    const url = 'https://data.epa.gov.tw/api/v2/aqx_p_02';
+    const url = 'https://data.epa.gov.tw/api/v2/aqx_p_432';
     const key = '19843a99-912f-4804-9d4b-3fa43961f7a0';
 
     const res = await axios.get(`${url}?api_key=${key}`)
-      .then((res) => {
-        Object.assign(data, res.data.records);
-        Object.assign(filterData, res.data.records);
-        // 存入所有城市資料
-        data.forEach((el) => {
-          if(county.indexOf(el.county) === -1) county.push(el.county)
-        })
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    // console.log(res.data.records)
+
+    Object.assign(data, res.data.records)
+
+    res.data.records.forEach(item => {
+      if (county.indexOf(item.county) === -1) {
+        county.push(item.county)
+      }
+    })
   }
 
   // 內元件(select) 向外傳遞的事件
@@ -44,8 +41,12 @@
   }
 
   // 篩選城市
-  let filterCounty = computed(() => {
-    return data.filter((el) => filterText === 'ALL' ? data : el.county === filterText)
+  const filterData = computed(() => {
+    return data.filter(item => 
+      filterText.value === 'ALL' 
+      ? true 
+      : filterText.value === item.county
+    )
   })
 
 </script>
