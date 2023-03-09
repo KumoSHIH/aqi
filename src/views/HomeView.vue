@@ -1,5 +1,6 @@
 <script setup>
   import { computed, onMounted, reactive, ref, watch } from 'vue';
+  import { useStore } from 'vuex';
   import axios from 'axios';
   import Select from '@/components/Select.vue';
   import Card from '@/components/Card.vue';
@@ -10,7 +11,7 @@
   const county = reactive([]); // 城市
   const filterText = ref('ALL'); // 篩選的城市字串
   const num = ref(0); // 城市數量
-  const current = ref(0); // 當前頁碼
+  const store = useStore();
 
   onMounted(() => {
     getData();
@@ -36,7 +37,7 @@
   // 內元件(select) 向外傳遞的事件
   let filterHandler = (val) => {
     filterText.value = val;
-    current.value = 0;
+    store.commit('initNum')
   }
 
   // 篩選城市
@@ -64,9 +65,12 @@
   })
 
   // 當前頁碼
-  const currentHandler = (val) => {
-    current.value = val;
-  }
+  const currentNum = computed(() => store.getters.num)
+
+  // 初始化頁碼
+  const initNum = computed(() => {
+    store.commit('initNum')
+  })
 </script>
 
 <template>
@@ -84,11 +88,10 @@
         <div class="card-container">
           <Card 
             :filterData="filterData"
-            :current="current"/>
+            :current="currentNum"/>
         </div>
         <Pagination 
           :page="page"
-          @currentPage="currentHandler"
           />
       </div>
     </div>

@@ -10,6 +10,7 @@
   <li>使用 Vue3</li>
   <li>元件切分</li>
   <li>串接 API</li>
+  <li>Vuex 管理組件共同狀態</li>
   <li>props、emit</li>
 </ul>
 
