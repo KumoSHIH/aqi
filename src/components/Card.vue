@@ -3,17 +3,25 @@ import { computed, ref } from 'vue';
 
 export default {
   props: {
-    filterData: {
-      type: Array,
-      default: () => []
+    // filterData: {
+    //   type: Array,
+    //   default: () => []
+    // },
+    // current: {
+    //   type: Number,
+    //   default: 1,
+    // },
+    cardData: {
+      type: Object,
+      default: (() => {})
     },
-    current: {
-      type: Number,
-      default: 1,
+    status: {
+      type: String,
+      default: '良好'
     },
   },
+  emit: ['addFocus', 'removeFocus'],
   setup(props) {
-    const isCheck = ref(false);
     // 分頁資料
     const currentData = computed(() => {
       return props.filterData.slice((props.current * 6), (props.current * 6 + 6))
@@ -32,48 +40,48 @@ export default {
       }
     })
 
-    // 加入關注城市
-    const addFavorite = (item) => {
-      console.log('233');
-      isCheck.value != isCheck.value
-    }
     return {
       props,
-      isCheck,
-      addFavorite,
-      currentData,
+      // currentData,
       status
     }
   },
+  // v-for="item in currentData"
+  //   :key="item.site"
+  //   :class="status(item.status)"
 }
 </script>
 
 <template>
-  <div class="card" 
-    v-for="item in currentData"
-    :key="item.site"
-    :class="status(item.status)"
+  <div class="card"
+    :class="status(props.status)"
     >
     <div class="card-head">
-      <h6>{{ item.sitename }}</h6>
-      <!-- <div class="fav" @click="addFavorite(item)">
+      <div class="name">
+        <h6>{{ cardData.sitename }}</h6>
+        <p class="fz-14">{{ cardData.county }}</p>
+      </div>
+      <div class="fav">
         <font-awesome-icon icon="fa-regular fa-heart"
-        v-show="!isCheck"
-        />
-        <font-awesome-icon icon="fa-solid fa-heart" 
-        v-show="isCheck"
-        />
-      </div> -->
+          v-if="!cardData.isFocus"
+          @click="$emit('addFocus', cardData), cardData.isFocus = true"
+          />
+        <font-awesome-icon icon="fa-solid fa-heart"
+          v-else
+          @click="$emit('removeFocus', cardData), cardData.isFocus = false"
+          />
+      </div>
     </div>
-    <p>狀態: {{ item.status }}</p>
-    <p>空氣品質指標(aqi): {{ item.aqi }}</p>
-    <p>細懸浮微粒(pm2.5): {{ item['pm2.5'] }}</p>
-    <p>發佈時間: {{ item.publishtime }}</p>
+    <p>狀態: {{ cardData.status }}</p>
+    <p>空氣品質指標(aqi): {{ cardData.aqi }}</p>
+    <p>細懸浮微粒(pm2.5): {{ cardData['pm2.5'] }}</p>
+    <p>發佈時間: {{ cardData.publishtime }}</p>
   </div>
 </template>
 
 <style scoped lang="scss">
   @import '../assets/scss/_mixin.scss';
+  @import '../assets/scss/_variable.scss';
 
   .card {
     max-width: 230px;
@@ -87,22 +95,22 @@ export default {
       margin-right: 0;
     }
     &.status-aqi1 {
-      border: solid 3px #74bc7b;
+      border: solid 3px $color-status1;
     }
     &.status-aqi2 {
-      border: solid 3px #3A98B9;
+      border: solid 3px $color-status2;
     }
     &.status-aqi3 {
-      border: solid 3px #FFAACF;
+      border: solid 3px $color-status3;
     }
     &.status-aqi4 {
-      border: solid 3px #F99417;
+      border: solid 3px $color-status4;
     }
     &.status-aqi5 {
-      border: solid 3px #F94A29;
+      border: solid 3px $color-status5;
     }
     &.status-aqi6 {
-      border: solid 3px #A31ACB;
+      border: solid 3px $color-status6;
     }
     p {
       padding: 5px 0;
@@ -123,16 +131,22 @@ export default {
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: solid 1px rgba(0,0,0,0.1);
-    h6 {
-      font-size: 30px;
-      @include rwdmax(600) {
-        font-size: 24px;
+    .name {
+      h6 {
+        font-size: 30px;
+        @include rwdmax(600) {
+          font-size: 24px;
+        }
+      }
+      p {
+        margin-left: 2px;
       }
     }
+    
     .fav {
       padding: 10px;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 24px;
     }
   }
 </style>
