@@ -46,7 +46,7 @@
   // 內元件(select) 向外傳遞的事件
   let filterHandler = (val) => {
     filterText.value = val;
-    store.commit('initNum')
+    store.commit('INIT_NUM')
   }
 
   // 篩選城市
@@ -65,7 +65,7 @@
   const focusCurrentNum = computed(() => store.getters.focusNum)
 
   // 初始化頁碼
-  const initNum = computed(() => store.commit('initNum'))
+  const initNum = computed(() => store.commit('INIT_NUM'))
 
   // 取得頁數
   const page = computed(() => {
@@ -83,7 +83,7 @@
   })
 
   // 取得關注城市頁數
-  const focusPage = computed(() => Math.ceil(focusData.length / 6))
+  const focusPage = computed(() => Math.ceil(focusData.length / 3))
 
   // 篩選城市的分頁資料
   const selectFilterData = computed(() => {
@@ -104,9 +104,21 @@
     return focusData.slice((focusCurrentNum.value * 3), (focusCurrentNum.value * 3 + 3))
   })
 
-  // store select page
-  const pageHandler = () => {
-    
+  // store page
+  const selectActive = computed(() => {
+    store.getters.num
+  })
+
+  const focusActive = computed(() => {
+    store.getters.focusNum
+  })
+
+  const selectPageHandler = (index) => {
+    store.commit('SELECT_ACTIVE_NUM', index)
+  }
+
+  const focusPageHandler = (index) => {
+    store.commit('FOCUS_ACTIVE_NUM', index)
   }
 
   // 加入關注
@@ -120,12 +132,16 @@
       return item.sitename === card.sitename
     })
     focusData.splice(idx, 1)
+
+    if(focusData.length % 3 === 0) {
+      document.querySelector('.page-box.active').click()
+    }
   }
 </script>
 
 <template>
   <div class="home">
-    <!-- <h1>空氣品質指標(AQI)</h1> -->
+    <h1>空氣品質指標(AQI)</h1>
     <Select
       :county="county" 
       @filterEvent="filterHandler"/>
@@ -147,7 +163,8 @@
         </div>
         <Pagination 
           :page="focusPage"
-          :pageHand="pageHandler"
+          :activePage="focusActive"
+          @pageHand="focusPageHandler"
           />
       </div>
     </div>
@@ -169,6 +186,8 @@
         </div>
         <Pagination 
           :page="page"
+          :activePage="selectActive"
+          @pageHand="selectPageHandler"
           />
       </div>
     </div>
@@ -192,7 +211,7 @@
     }
   }
   .wrap {
-    max-width: 800px;
+    max-width: 1080px;
     width: 90%;
     margin: 20px auto 0;
     display: flex;

@@ -1,26 +1,19 @@
 <script>
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
-
 export default {
   props: {
     page: {
       type: Number,
       default: 0,
+    },
+    activePage: {
+      type: Number,
+      default: 0
     }
   },
+  emit: ['pageHand'],
   setup(props) {
-    const store = useStore();
-    // 當前頁碼
-    const currentPage = computed(() => store.getters.num)
-    // 切換頁碼
-    const handPage = (index) => {
-      store.commit('activeNum', index)
-    }
     return {
       props,
-      handPage,
-      currentPage
     }
   }
 }
@@ -31,8 +24,8 @@ export default {
     <li class="page-box" 
       v-for="(item, index) in props.page" 
       :key="item"
-      :class="{ active: index === currentPage}"
-      @click="handPage(index)"
+      :class="{ active: index === activePage}"
+      @click="$emit('pageHand', index)"
     >{{ index + 1 }}</li>
   </ul>
 </template>

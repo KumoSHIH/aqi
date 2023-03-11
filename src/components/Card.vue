@@ -3,14 +3,6 @@ import { computed, ref } from 'vue';
 
 export default {
   props: {
-    // filterData: {
-    //   type: Array,
-    //   default: () => []
-    // },
-    // current: {
-    //   type: Number,
-    //   default: 1,
-    // },
     cardData: {
       type: Object,
       default: (() => {})
@@ -42,13 +34,9 @@ export default {
 
     return {
       props,
-      // currentData,
       status
     }
   },
-  // v-for="item in currentData"
-  //   :key="item.site"
-  //   :class="status(item.status)"
 }
 </script>
 
@@ -91,7 +79,7 @@ export default {
     padding: 20px;
     box-shadow: 5px 5px 20px rgba(0,0,0,0.1);
     border-radius: 8px;
-    &:nth-child(2n){
+    &:nth-child(3n){
       margin-right: 0;
     }
     &.status-aqi1 {

@@ -7,25 +7,31 @@ export default createStore({
   },
   // 發送事件給 mutations
   action: {
-    handNum(context) {
-      context.commit('activeNum')
-    }
+    selectNumHand(context) {
+      context.commit("SELECT_ACTIVE_NUM");
+    },
+    focusNumHand(context) {
+      context.commit("FOCUS_ACTIVE_NUM");
+    },
   },
   // mutations 才可以修改資料
   mutations: {
-    initNum(state) {
+    INIT_NUM(state) {
       state.num = 0;
     },
-    activeNum(state, payload) {
+    SELECT_ACTIVE_NUM(state, payload) {
       state.num = payload;
+    },
+    FOCUS_ACTIVE_NUM(state, payload) {
+      state.focusNum = payload;
     },
   },
   getters: {
     num(state) {
-      return state.num
+      return state.num;
     },
     focusNum(state) {
-      return state.focusNum
-    }
-  }
-})
+      return state.focusNum;
+    },
+  },
+});
