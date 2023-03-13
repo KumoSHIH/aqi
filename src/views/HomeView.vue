@@ -10,7 +10,6 @@
   const data = reactive([]); // 全部資料
   const county = reactive([]); // 城市
   const filterText = ref('ALL'); // 篩選的城市字串
-  // let filterData = reactive([]); // 篩選的城市
   const num = ref(0); // 城市數量
   const focusData = reactive([]); // 關注的城市
   const store = useStore();
@@ -104,15 +103,7 @@
     return focusData.slice((focusCurrentNum.value * 3), (focusCurrentNum.value * 3 + 3))
   })
 
-  // store page
-  const selectActive = computed(() => {
-    store.getters.num
-  })
-
-  const focusActive = computed(() => {
-    store.getters.focusNum
-  })
-
+  // store
   const selectPageHandler = (index) => {
     store.commit('SELECT_ACTIVE_NUM', index)
   }
@@ -133,8 +124,13 @@
     })
     focusData.splice(idx, 1)
 
+    // 移除關注頁碼後回到前一頁
     if(focusData.length % 3 === 0) {
-      document.querySelector('.page-box.active').click()
+      let num = focusData.length / 3 + 1 >= 1 
+        ? focusData.length / 3
+        : 1
+      if(focusData.length > 0 ) document.querySelector(`.page-box:nth-child(${num})`).click()
+      else return
     }
   }
 </script>
@@ -163,7 +159,7 @@
         </div>
         <Pagination 
           :page="focusPage"
-          :activePage="focusActive"
+          :activePage="focusCurrentNum"
           @pageHand="focusPageHandler"
           />
       </div>
@@ -186,7 +182,7 @@
         </div>
         <Pagination 
           :page="page"
-          :activePage="selectActive"
+          :activePage="currentNum"
           @pageHand="selectPageHandler"
           />
       </div>

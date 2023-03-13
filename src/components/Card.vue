@@ -108,8 +108,16 @@ export default {
         font-size: 14px;
       }
     }
+    @include rwdmax(1201) {
+      &:nth-child(3n){
+        margin-right: 20px;
+      }
+    }
     @include rwdmax(760) {
       margin-right: 0;
+      &:nth-child(3n){
+        margin-right: 0;
+      }
     }
   }
   .card-head {

@@ -22,7 +22,7 @@ export default {
 <template>
   <ul class="page-wrap" >
     <li class="page-box" 
-      v-for="(item, index) in props.page" 
+      v-for="(item, index) in page" 
       :key="item"
       :class="{ active: index === activePage}"
       @click="$emit('pageHand', index)"
